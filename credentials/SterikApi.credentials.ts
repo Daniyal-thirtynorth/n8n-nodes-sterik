@@ -34,7 +34,7 @@ export class SterikApi implements ICredentialType {
 			name: 'baseUrl',
 			type: 'string',
 			required: true,
-			default: 'https://18-226-238-247.sslip.io',
+			default: 'https://api.sterik.ai',
 			description: 'Address of the Sterik API, without a trailing slash',
 		},
 	];
