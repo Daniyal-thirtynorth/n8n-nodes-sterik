@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2
+
+- Fix: the agent picker was hidden for Ask and Retrain, so they failed with "Could not get parameter chatBotId".
+
 ## 0.1.1
 
 - First release published from GitHub Actions with npm provenance.

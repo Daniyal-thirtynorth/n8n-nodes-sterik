@@ -11,12 +11,7 @@ import {
 	type INodeTypeDescription,
 } from 'n8n-workflow';
 
-import {
-	getAgents,
-	getWorkspaces,
-	sterikRequest,
-	sterikRequestAll,
-} from './GenericFunctions';
+import { getAgents, getWorkspaces, sterikRequest, sterikRequestAll } from './GenericFunctions';
 
 const show = (resource: string, operation?: string[]) => ({
 	show: operation ? { resource: [resource], operation } : { resource: [resource] },
@@ -33,19 +28,24 @@ const agentFields: INodeProperties[] = [
 		description:
 			'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
 	},
-	{
-		displayName: 'Agent Name or ID',
-		name: 'chatBotId',
-		type: 'options',
-		typeOptions: { loadOptionsMethod: 'getAgents', loadOptionsDependsOn: ['workspaceId'] },
-		required: true,
-		default: '',
-		displayOptions: {
-			hide: { resource: ['agent'], operation: ['getAll'] },
-		},
-		description:
-			'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
-	},
+	// Two copies because n8n's `hide` hides on any matching key, so "agent but
+	// not getAll" can only be written as two `show` rules.
+	...[
+		{ resource: ['agent'], operation: ['ask', 'retrain'] },
+		{ resource: ['conversation', 'lead', 'trainingData'] },
+	].map(
+		(show): INodeProperties => ({
+			displayName: 'Agent Name or ID',
+			name: 'chatBotId',
+			type: 'options',
+			typeOptions: { loadOptionsMethod: 'getAgents', loadOptionsDependsOn: ['workspaceId'] },
+			required: true,
+			default: '',
+			displayOptions: { show },
+			description:
+				'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code/expressions/">expression</a>',
+		}),
+	),
 ];
 
 const limitFields = (resource: string): INodeProperties[] => [
