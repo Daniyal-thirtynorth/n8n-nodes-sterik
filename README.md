@@ -66,6 +66,20 @@ npm run build
 npm run lint
 ```
 
+On an Intel Mac `npm run dev` fails (n8n's `isolated-vm` has no Intel macOS binary), so run n8n in Docker with the build mounted:
+
+```bash
+npm run build
+docker run -d --name n8n-sterik -p 5678:5678 \
+  -v n8n_sterik_data:/home/node/.n8n \
+  -v "$PWD/dist":/home/node/.n8n/custom/n8n-nodes-sterik:ro \
+  -e N8N_SECURE_COOKIE=false \
+  docker.n8n.io/n8nio/n8n:latest
+# after code changes: npm run build && docker restart n8n-sterik
+```
+
+From inside Docker, a Sterik API on your machine is `http://host.docker.internal:3000`.
+
 Backend routes used: `GET /user/profile` (credential test), `GET /workspace/list`, `GET /chat-bot/list`, `POST /playground/:chatBotId/chat?stream=false`, `POST /chat-bot/:chatBotId/retrain`, `POST /chat-bot/:chatBotId/content/upload`, conversation and lead routes under `/playground`, and `POST /chat-bot/:chatBotId/webhooks/add` / `remove`.
 
 ## Releasing
