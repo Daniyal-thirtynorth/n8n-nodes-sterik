@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-sterik",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "n8n nodes for Sterik: chat with your AI agents, manage leads and training data, and trigger workflows on agent events.",
   "license": "MIT",
   "homepage": "https://github.com/Daniyal-thirtynorth/n8n-nodes-sterik",
